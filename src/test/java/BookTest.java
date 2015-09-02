@@ -64,7 +64,6 @@ public class BookTest {
     Author savedAuthor = myBook.getAuthors().get(0);
     assertTrue(myAuthor.equals(savedAuthor));
   }
-  //
 
   @Test
   public void delete_deletesAllBooksForAuthor() {

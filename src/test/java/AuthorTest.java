@@ -7,10 +7,10 @@ public class AuthorTest {
   @Rule
   public DatabaseRule database= new DatabaseRule();
 
-  // @Test
-  // public void all_emptyAtFirst() {
-  //   assertEquals(Author.all().size(), 0);
-  // }
+  @Test
+  public void all_emptyAtFirst() {
+    assertEquals(Author.all().size(), 0);
+  }
 
   @Test
   public void equals_returnsTrueIfAuthorNamesAretheSame() {
@@ -27,53 +27,53 @@ public class AuthorTest {
     assertEquals(Author.all().get(0).getName(), "Momo");
   }
 
-  //
-  // // @Test
-  // // public void find_findsAuthorsInDatabase_true() {
-  // //   Author myAuthor = new Author("Momo");
-  // //   myAuthor.save();
-  // //   Author savedAuthor = Author.find(myAuthor.getAuthorId());
-  // //   assertEquals(savedAuthor.getName(), "Momo Ozawa");
-  // // }
-  //
-  // //
-  // @Test
-  // public void delete_deletesAllAuthorsInBook() {
-  //   Book myBook = new Book("Proofs", 2, 2);
-  //   myBook.save();
-  //
-  //   Author myAuthor = new Author("Momo");
-  //   myAuthor.save();
-  //
-  //   myAuthor.addBook(myBook);
-  //   myAuthor.delete();
-  //   assertEquals(myBook.getAuthors().size(), 0);
-  // }
-  //
-  // @Test
-  // public void addCourse_addsCourseToAuthor() {
-  //   Book myBook = new Book("Proofs", 307);
-  //   myBook.save();
-  //
-  //   Author myAuthor = new Author("Momo", "Ozawa", "09/28/2010");
-  //   myAuthor.save();
-  //
-  //   myAuthor.addBook(myBook);
-  //   Book savedCourse = myAuthor.getCourses().get(0);
-  //   assertTrue(myBook.equals(savedCourse));
-  // }
-  //
-  // @Test
-  // public void getCourses_returnsAllCourses_ArrayList() {
-  //   Book myBook = new Book("Proofs", 307);
-  //   myBook.save();
-  //
-  //   Author myAuthor = new Author("Momo", "Ozawa", "09/28/2010");
-  //   myAuthor.save();
-  //
-  //   myAuthor.addBook(myBook);
-  //   List savedCourses = myAuthor.getCourses();
-  //   assertEquals(savedCourses.size(), 1);
-  // }
+
+  @Test
+  public void find_findsAuthorsInDatabase_true() {
+    Author myAuthor = new Author("Momo");
+    myAuthor.save();
+    Author savedAuthor = Author.find(myAuthor.getAuthorId());
+    assertEquals(savedAuthor.getName(), "Momo");
+  }
+
+  @Test
+  public void delete_deletesAllAuthorsInBook() {
+    Book myBook = new Book("Proofs", 2);
+    myBook.save();
+
+    Author myAuthor = new Author("Momo");
+    myAuthor.save();
+
+    myAuthor.addBook(myBook);
+    myAuthor.delete();
+    assertEquals(myBook.getAuthors().size(), 0);
+  }
+
+
+  @Test
+  public void addBook_addsBookToAuthor() {
+    Book myBook = new Book("Proofs", 3);
+    myBook.save();
+
+    Author myAuthor = new Author("Momo");
+    myAuthor.save();
+
+    myAuthor.addBook(myBook);
+    Book savedBook = myAuthor.getBooks().get(0);
+    assertTrue(myBook.equals(savedBook));
+  }
+
+  @Test
+  public void getBooks_returnsAllBooks_ArrayList() {
+    Book myBook = new Book("Proofs", 307);
+    myBook.save();
+
+    Author myAuthor = new Author("Momo");
+    myAuthor.save();
+
+    myAuthor.addBook(myBook);
+    List savedBooks = myAuthor.getBooks();
+    assertEquals(savedBooks.size(), 1);
+  }
 
 }

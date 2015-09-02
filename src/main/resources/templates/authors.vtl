@@ -1,0 +1,20 @@
+<table class="table table-striped" border="1">
+  <thead>
+  <th>
+    <h1>Authors</h1>
+  </th>
+</thead>
+  <tbody>
+    <tr>
+      <td>
+        <ul>
+          #foreach($author in $allAuthors)
+          <li><a href="/author/$author.getAuthorId()">$author.getName()</a>&nbsp;&nbsp;<a href="/authors/$author.getAuthorId()/edit"><span class="glyphicon glyphicon-pencil"></span></a>&nbsp;&nbsp;<a href="/authors/$author.getAuthorId()/delete"><span class="glyphicon glyphicon-trash"></span></a></li>
+          #end
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<a href="/authors/new">Add new author</a>

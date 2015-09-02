@@ -1,0 +1,29 @@
+
+  #if ($editBook)
+    <p>
+    Edit a book:
+    </p>
+
+    <form action="/books/$editBook.getBookId()" method="post">
+    <label for="editBookTitle">Book Name:</label>
+      <input type="text" name="editBookTitle" id="editBookTitle" value="$editBook.getTitle()">
+      <br>
+        <label for="editBookCopies">Book Copies:</label>
+      <input type="text" name="editBookCopies" id="editBookCopies" value="$editBook.getCopies()">
+          <button type="submit"> Go!</button>
+    </form>
+
+  #else
+    <p>
+    Add a new book:
+    </p>
+
+    <form action="/books" method="post">
+    <label for="bookTitle">Book Title:</label>
+      <input type="text" name="bookTitle" id="bookTitle">
+      <br>
+        <label for="bookCopies">Book Copies:</label>
+      <input type="text" name="bookCopies" id="bookCopies">
+          <button type="submit"> Go!</button>
+    </form>
+  #end

@@ -13,186 +13,178 @@ public class App {
   public static void main(String[] args) {
     staticFileLocation("/public");
     String layout = "templates/layout.vtl";
+
+    // Main page
+    get("/", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+
+      model.put("template", "templates/index.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    // Index for books
+    get("/books", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      model.put("allBooks", Book.all());
+      model.put("template", "templates/books.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
     //
-    // // Main page
-    // get("/", (request, response) -> {
-    //   HashMap<String, Object> model = new HashMap<String, Object>();
-    //
-    //   model.put("template", "templates/index.vtl");
-    //   return new ModelAndView(model, layout);
-    // }, new VelocityTemplateEngine());
-    //
-    // // Index for courses
-    // get("/courses", (request, response) -> {
-    //   HashMap<String, Object> model = new HashMap<String, Object>();
-    //   model.put("allCourses", Course.all());
-    //   model.put("template", "templates/courses.vtl");
-    //   return new ModelAndView(model, layout);
-    // }, new VelocityTemplateEngine());
-    //
-    // // Index for students
-    // get("/students", (request, response) -> {
-    //   HashMap<String, Object> model = new HashMap<String, Object>();
-    //   model.put("allStudents", Student.all());
-    //   model.put("template", "templates/students.vtl");
-    //   return new ModelAndView(model, layout);
-    // }, new VelocityTemplateEngine());
-    //
-    // // Show individual course
-    // get("/course/:id", (request, response) -> {
-    //   HashMap<String, Object> model = new HashMap<String, Object>();
-    //   int id = Integer.parseInt(request.params(":id"));
-    //   Course showCourse = Course.find(id);
-    //   model.put("showCourse", showCourse);
-    //   model.put("template", "templates/course.vtl");
-    //   return new ModelAndView(model, layout);
-    //   }, new VelocityTemplateEngine());
-    //
-    // // Show individual student
-    // get("/student/:id", (request, response) -> {
-    //   HashMap<String, Object> model = new HashMap<String, Object>();
-    //   int id = Integer.parseInt(request.params(":id"));
-    //   Student showStudent = Student.find(id);
-    //   model.put("showStudent", showStudent);
-    //   model.put("template", "templates/student.vtl");
-    //   return new ModelAndView(model, layout);
-    //   }, new VelocityTemplateEngine());
-    //
-    // // Show empty new course form
-    // get("/courses/new", (request, response) -> {
-    //   HashMap<String, Object> model = new HashMap<String, Object>();
-    //
-    //   model.put("template", "templates/course-form.vtl");
-    //   return new ModelAndView(model, layout);
-    // }, new VelocityTemplateEngine());
-    //
-    // // Show empty new student form
-    // get("/students/new", (request, response) -> {
-    //   HashMap<String, Object> model = new HashMap<String, Object>();
-    //   model.put("allCourses", Course.all());
-    //   model.put("template", "templates/student-form.vtl");
-    //   return new ModelAndView(model, layout);
-    // }, new VelocityTemplateEngine());
-    //
-    // // Create course
-    // post("/courses", (request, response) -> {
-    //   HashMap<String, Object> model = new HashMap<String, Object>();
-    //
-    //   String courseName = request.queryParams("courseName");
-    //   String courseNumberString = request.queryParams("courseNumber");
-    //   System.out.println(courseNumberString);
-    //
-    //   Integer courseNumber = Integer.parseInt(courseNumberString);
-    //
-    //   Course newCourse = new Course(courseName, courseNumber);
-    //
-    //   newCourse.save();
-    //
-    //   model.put("allCourses", Course.all());
-    //   model.put("template", "templates/courses.vtl");
-    //   return new ModelAndView(model, layout);
-    // }, new VelocityTemplateEngine());
-    //
-    // // Create student
-    // post("/students", (request, response) -> {
-    //   HashMap<String, Object> model = new HashMap<String, Object>();
-    //
-    //   String studentFirstName = request.queryParams("studentFirstName");
-    //   String studentLastName = request.queryParams("studentLastName");
-    //   String studentDate= request.queryParams("studentDate");
-    //   Integer studentCourseId = Integer.parseInt(request.queryParams("studentCourses"));
-    //
-    //   Course newCourse = Course.find(studentCourseId);
-    //   Student newStudent = new Student(studentFirstName, studentLastName, studentDate);
-    //
-    //   newStudent.save();
-    //   newStudent.addCourse(newCourse);
-    //
-    //   model.put("allStudents", Student.all());
-    //   model.put("template", "templates/students.vtl");
-    //   return new ModelAndView(model, layout);
-    // }, new VelocityTemplateEngine());
-    //
-    // // Edit course
-    // get("/courses/:id/edit", (request, response) -> {
-    //   HashMap<String, Object> model = new HashMap<String, Object>();
-    //   int id = Integer.parseInt(request.params(":id"));
-    //   Course editCourse = Course.find(id);
-    //
-    //   model.put("editCourse", editCourse);
-    //   model.put("template", "templates/course-form.vtl");
-    //   return new ModelAndView(model, layout);
-    // }, new VelocityTemplateEngine());
-    //
-    // // Edit student
-    // get("/students/:id/edit", (request, response) -> {
-    //   HashMap<String, Object> model = new HashMap<String, Object>();
-    //   int id = Integer.parseInt(request.params(":id"));
-    //   Student editStudent = Student.find(id);
-    //   model.put("allCourses", Course.all());
-    //   model.put("editStudent", editStudent);
-    //   model.put("template", "templates/student-form.vtl");
-    //   return new ModelAndView(model, layout);
-    // }, new VelocityTemplateEngine());
-    //
-    // // Update course
-    // post("/courses/:id", (request, response) -> {
-    //   HashMap<String, Object> model = new HashMap<String, Object>();
-    //   String newCourseName = request.queryParams("editCourseName");
-    //   Integer newCourseNumber = Integer.parseInt(request.queryParams("editCourseNumber"));
-    //
-    //   int id = Integer.parseInt(request.params(":id"));
-    //   Course editCourse = Course.find(id);
-    //
-    //   editCourse.update(newCourseName, newCourseNumber);
-    //
-    //   model.put("allCourses", Course.all());
-    //   model.put("template", "templates/courses.vtl");
-    //   return new ModelAndView(model, layout);
-    // }, new VelocityTemplateEngine());
-    //
-    // // Update student
-    // post("/students/:id", (request, response) -> {
-    //   HashMap<String, Object> model = new HashMap<String, Object>();
-    //   String newStudentFirstName = request.queryParams("editStudentFirstName");
-    //   String newStudentLastName = request.queryParams("editStudentLastName");
-    //   String newStudentDate = request.queryParams("editStudentDate");
-    //   Integer newCourseNumber = Integer.parseInt(request.queryParams("editCourses"));
-    //   int id = Integer.parseInt(request.params(":id"));
-    //
-    //
-    //   Course newCourse = Course.find(newCourseNumber);
-    //   Student editStudent = Student.find(id);
-    //
-    //   editStudent.update(newStudentFirstName, newStudentLastName, newStudentDate, newCourse);
-    //
-    //   model.put("allStudents", Student.all());
-    //   model.put("template", "templates/students.vtl");
-    //   return new ModelAndView(model, layout);
-    // }, new VelocityTemplateEngine());
-    //
-    // // Delete course
-    // get("/courses/:id/delete", (request, response) -> {
-    //   HashMap<String, Object> model = new HashMap<String, Object>();
-    //   int id = Integer.parseInt(request.params(":id"));
-    //   Course deleteCourse = Course.find(id);
-    //   deleteCourse.delete();
-    //   model.put("allCourses", Course.all());
-    //   model.put("template", "templates/courses.vtl");
-    //   return new ModelAndView(model, layout);
-    // }, new VelocityTemplateEngine());
-    //
-    // // Delete student
-    // get("/students/:id/delete", (request, response) -> {
-    //   HashMap<String, Object> model = new HashMap<String, Object>();
-    //   int id = Integer.parseInt(request.params(":id"));
-    //   Student deleteStudent = Student.find(id);
-    //   deleteStudent.delete();
-    //   model.put("allStudents", Student.all());
-    //   model.put("template", "templates/students.vtl");
-    //   return new ModelAndView(model, layout);
-    // }, new VelocityTemplateEngine());
-    //
+    // Index for authors
+    get("/authors", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      model.put("allAuthors", Author.all());
+      model.put("template", "templates/authors.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    // Show individual course
+    get("/book/:id", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      int id = Integer.parseInt(request.params(":id"));
+      Book showBook = Book.find(id);
+      model.put("showBook", showBook);
+      model.put("template", "templates/book.vtl");
+      return new ModelAndView(model, layout);
+      }, new VelocityTemplateEngine());
+
+    // Show individual author
+    get("/author/:id", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      int id = Integer.parseInt(request.params(":id"));
+      Author showAuthor = Author.find(id);
+      model.put("showAuthor", showAuthor);
+      model.put("template", "templates/author.vtl");
+      return new ModelAndView(model, layout);
+      }, new VelocityTemplateEngine());
+
+    // Show empty new course form
+    get("/books/new", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+
+      model.put("template", "templates/book-form.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    // Show empty new author form
+    get("/authors/new", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      model.put("allBooks", Book.all());
+      model.put("template", "templates/author-form.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    // Create course
+    post("/books", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+
+      String bookTitle = request.queryParams("bookTitle");
+      Integer bookCopies = Integer.parseInt(request.queryParams("bookCopies"));
+      Book newBook = new Book(bookTitle, bookCopies);
+
+      newBook.save();
+
+      model.put("allBooks", Book.all());
+      model.put("template", "templates/books.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+
+    // Create author
+    post("/authors", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+
+      String authorName = request.queryParams("authorName");
+      Integer authorId = Integer.parseInt(request.queryParams("authorId"));//check
+
+      Book newBook = Book.find(authorId);
+      Author newAuthor = new Author(authorName);
+
+      newAuthor.save();
+      newBook.addAuthor(newAuthor);
+
+      model.put("allAuthors", Author.all());
+      model.put("template", "templates/authors.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    // Edit course
+    get("/books/:id/edit", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      int id = Integer.parseInt(request.params(":id"));
+      Book editBook = Book.find(id);
+
+      model.put("editBook", editBook);
+      model.put("template", "templates/book-form.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    // Edit author
+    get("/authors/:id/edit", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      int id = Integer.parseInt(request.params(":id"));
+      Author editAuthor = Author.find(id);
+      model.put("allBooks", Book.all());
+      model.put("editAuthor", editAuthor);
+      model.put("template", "templates/author-form.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    // Update book
+    post("/books/:id", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      String newBookTitle = request.queryParams("editBookTitle");
+      Integer newBookCopies = Integer.parseInt(request.queryParams("editBookCopies"));
+
+      int id = Integer.parseInt(request.params(":id"));
+      Book editBook = Book.find(id);
+
+      editBook.update(newBookTitle, newBookCopies);
+
+      model.put("allBooks", Book.all());
+      model.put("template", "templates/books.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    // Update author
+    post("/authors/:id", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      String newAuthorName = request.queryParams("editAuthorName");
+      Integer newBooks = Integer.parseInt(request.queryParams("editBooks"));
+      int id = Integer.parseInt(request.params(":id"));
+
+      Book newBook = Book.find(newBooks);
+      Author editAuthor = Author.find(id);
+
+      editAuthor.update(newAuthorName, newBook);
+
+      model.put("allAuthors", Author.all());
+      model.put("template", "templates/authors.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    // Delete course
+    get("/books/:id/delete", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      int id = Integer.parseInt(request.params(":id"));
+      Book deleteBook = Book.find(id);
+      deleteBook.delete();
+      model.put("allBooks", Book.all());
+      model.put("template", "templates/books.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    // Delete author
+    get("/authors/:id/delete", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      int id = Integer.parseInt(request.params(":id"));
+      Author deleteAuthor = Author.find(id);
+      deleteAuthor.delete();
+      model.put("allAuthors", Author.all());
+      model.put("template", "templates/authors.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
 
   }//close
 }//close

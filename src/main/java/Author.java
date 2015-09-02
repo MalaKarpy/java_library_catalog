@@ -58,6 +58,12 @@ public class Author {
   }
 
 
+  public void update(String name, Book books) {
+    updateName(name);
+    updateBook(books);
+  }
+
+
   public void updateName(String name) {
     this.name = name;
     try(Connection con = DB.sql2o.open()) {
@@ -69,6 +75,17 @@ public class Author {
     }
   }
 
+  // public void updateCopies(Integer copies) {
+  //   this.name = name;
+  //   try(Connection con = DB.sql2o.open()) {
+  //     String sql = "UPDATE books SET copies=:copies WHERE id=:id";
+  //     con.createQuery(sql)
+  //       .addParameter("copies", copies)
+  //       .addParameter("id", id)
+  //       .executeUpdate();
+  //   }
+  // }
+
 
   public void updateBook(Book newBook) {
     try(Connection con = DB.sql2o.open()) {
@@ -76,6 +93,7 @@ public class Author {
       String sql = "UPDATE books_authors SET book_id = :book_id, author_id = :author_id WHERE id = :id";
       con.createQuery(sql)
         .addParameter("book_id", newBookId)
+        .addParameter("author_id", this.getAuthorId())
         .addParameter("id", id)
         .executeUpdate();
     }
@@ -97,7 +115,7 @@ public class Author {
 
   public void addBook(Book book) {
     try (Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO books_authors (book_id, id) VALUES (:book_id, :id)";
+      String sql = "INSERT INTO books_authors (book_id, author_id) VALUES (:book_id, :id)";
       con.createQuery(sql)
         .addParameter("book_id", book.getBookId())
         .addParameter("id", this.getAuthorId())
@@ -107,7 +125,7 @@ public class Author {
 
   public List<Book> getBooks() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT books.* FROM authors JOIN books_authors USING (id) JOIN books USING (id) WHERE authors.id=:id";
+      String sql = "SELECT books.* FROM authors JOIN books_authors ON (authors.id=books_authors.author_id) JOIN books ON (books_authors.book_id=books.id) WHERE authors.id=:id";
       List<Book> books = con.createQuery(sql)
         .addParameter("id", this.getAuthorId())
         .executeAndFetch(Book.class);

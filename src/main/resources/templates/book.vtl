@@ -1,0 +1,20 @@
+Authors who wrote this book:
+
+<table class="table table-striped">
+  <tbody>
+    <tr>
+      <td>
+        Book Name:<strong>$showBook.getTitle()</strong>
+      </td>
+      <td>
+        Copies:<strong>$showBook.getCopies()</strong>
+      </td>
+    </tr>
+    <tr colspan="2"><td>
+      <ul>
+      #foreach($author in $showBook.getAuthors())
+      <li>$author.getName()&nbsp;</li>
+      #end
+    </ul></td></tr>
+  </tbody>
+</table>

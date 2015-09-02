@@ -1,0 +1,21 @@
+
+<table class="table table-striped" border="1">
+  <thead>
+  <th>
+    <h1>Books</h1>
+  </th>
+</thead>
+  <tbody>
+    <tr>
+      <td>
+        <ul>
+          #foreach($book in $allBooks)
+          <li><a href="/book/$book.getBookId()">$book.getTitle() $book.getCopies()</a>&nbsp;&nbsp;<a href="/books/$book.getBookId()/edit"><span class="glyphicon glyphicon-pencil"></span></a>&nbsp;&nbsp;<a href="/books/$book.getBookId()/delete"><span class="glyphicon glyphicon-trash"></span></a></li>
+          #end
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<a href="/books/new">Add new Book</a>
