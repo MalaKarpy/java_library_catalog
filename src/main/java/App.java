@@ -150,7 +150,7 @@ public class App {
       Book editBook = Book.find(id); //this is fine
       Author editAuthor = Author.find(id);
 
-      editAuthor.update(newBookAuthor, editBook);
+      //editAuthor.update(newBookAuthor, editBook);
 
       editBook.update(newBookTitle, newBookCopies);
       editBook.addAuthor(editAuthor);

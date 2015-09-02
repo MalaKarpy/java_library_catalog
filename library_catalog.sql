@@ -42,10 +42,10 @@ CREATE TABLE authors (
 ALTER TABLE authors OWNER TO "Guest";
 
 --
--- Name: author_id_seq; Type: SEQUENCE; Schema: public; Owner: Guest
+-- Name: authors_id_seq; Type: SEQUENCE; Schema: public; Owner: Guest
 --
 
-CREATE SEQUENCE author_id_seq
+CREATE SEQUENCE authors_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -53,13 +53,13 @@ CREATE SEQUENCE author_id_seq
     CACHE 1;
 
 
-ALTER TABLE author_id_seq OWNER TO "Guest";
+ALTER TABLE authors_id_seq OWNER TO "Guest";
 
 --
--- Name: author_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Guest
+-- Name: authors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Guest
 --
 
-ALTER SEQUENCE author_id_seq OWNED BY authors.id;
+ALTER SEQUENCE authors_id_seq OWNED BY authors.id;
 
 
 --
@@ -69,8 +69,7 @@ ALTER SEQUENCE author_id_seq OWNED BY authors.id;
 CREATE TABLE books (
     id integer NOT NULL,
     title character varying,
-    copies integer,
-    author_id integer
+    copies integer
 );
 
 
@@ -90,10 +89,10 @@ CREATE TABLE books_authors (
 ALTER TABLE books_authors OWNER TO "Guest";
 
 --
--- Name: books_author_id_seq; Type: SEQUENCE; Schema: public; Owner: Guest
+-- Name: books_authors_id_seq; Type: SEQUENCE; Schema: public; Owner: Guest
 --
 
-CREATE SEQUENCE books_author_id_seq
+CREATE SEQUENCE books_authors_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -101,20 +100,20 @@ CREATE SEQUENCE books_author_id_seq
     CACHE 1;
 
 
-ALTER TABLE books_author_id_seq OWNER TO "Guest";
+ALTER TABLE books_authors_id_seq OWNER TO "Guest";
 
 --
--- Name: books_author_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Guest
+-- Name: books_authors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Guest
 --
 
-ALTER SEQUENCE books_author_id_seq OWNED BY books_authors.id;
+ALTER SEQUENCE books_authors_id_seq OWNED BY books_authors.id;
 
 
 --
--- Name: book_id_seq; Type: SEQUENCE; Schema: public; Owner: Guest
+-- Name: books_id_seq; Type: SEQUENCE; Schema: public; Owner: Guest
 --
 
-CREATE SEQUENCE book_id_seq
+CREATE SEQUENCE books_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -122,13 +121,13 @@ CREATE SEQUENCE book_id_seq
     CACHE 1;
 
 
-ALTER TABLE book_id_seq OWNER TO "Guest";
+ALTER TABLE books_id_seq OWNER TO "Guest";
 
 --
--- Name: book_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Guest
+-- Name: books_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Guest
 --
 
-ALTER SEQUENCE book_id_seq OWNED BY books.id;
+ALTER SEQUENCE books_id_seq OWNED BY books.id;
 
 
 --
@@ -149,7 +148,7 @@ ALTER TABLE patrons OWNER TO "Guest";
 
 CREATE TABLE patrons_books (
     id integer NOT NULL,
-    patrons_id integer,
+    patron_id integer,
     author_id integer,
     book_id integer
 );
@@ -158,10 +157,10 @@ CREATE TABLE patrons_books (
 ALTER TABLE patrons_books OWNER TO "Guest";
 
 --
--- Name: patrons_book_id_seq; Type: SEQUENCE; Schema: public; Owner: Guest
+-- Name: patrons_books_id_seq; Type: SEQUENCE; Schema: public; Owner: Guest
 --
 
-CREATE SEQUENCE patrons_book_id_seq
+CREATE SEQUENCE patrons_books_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -169,13 +168,13 @@ CREATE SEQUENCE patrons_book_id_seq
     CACHE 1;
 
 
-ALTER TABLE patrons_book_id_seq OWNER TO "Guest";
+ALTER TABLE patrons_books_id_seq OWNER TO "Guest";
 
 --
--- Name: patrons_book_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Guest
+-- Name: patrons_books_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Guest
 --
 
-ALTER SEQUENCE patrons_book_id_seq OWNED BY patrons_books.id;
+ALTER SEQUENCE patrons_books_id_seq OWNED BY patrons_books.id;
 
 
 --
@@ -203,21 +202,21 @@ ALTER SEQUENCE patrons_id_seq OWNED BY patrons.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: Guest
 --
 
-ALTER TABLE ONLY authors ALTER COLUMN id SET DEFAULT nextval('author_id_seq'::regclass);
+ALTER TABLE ONLY authors ALTER COLUMN id SET DEFAULT nextval('authors_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: Guest
 --
 
-ALTER TABLE ONLY books ALTER COLUMN id SET DEFAULT nextval('book_id_seq'::regclass);
+ALTER TABLE ONLY books ALTER COLUMN id SET DEFAULT nextval('books_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: Guest
 --
 
-ALTER TABLE ONLY books_authors ALTER COLUMN id SET DEFAULT nextval('books_author_id_seq'::regclass);
+ALTER TABLE ONLY books_authors ALTER COLUMN id SET DEFAULT nextval('books_authors_id_seq'::regclass);
 
 
 --
@@ -231,7 +230,7 @@ ALTER TABLE ONLY patrons ALTER COLUMN id SET DEFAULT nextval('patrons_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: Guest
 --
 
-ALTER TABLE ONLY patrons_books ALTER COLUMN id SET DEFAULT nextval('patrons_book_id_seq'::regclass);
+ALTER TABLE ONLY patrons_books ALTER COLUMN id SET DEFAULT nextval('patrons_books_id_seq'::regclass);
 
 
 --
@@ -239,21 +238,30 @@ ALTER TABLE ONLY patrons_books ALTER COLUMN id SET DEFAULT nextval('patrons_book
 --
 
 COPY authors (id, name) FROM stdin;
+3	someone great
+4	someone awesome
+1	don
+2	Woo
+5	johnnie
 \.
 
 
 --
--- Name: author_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
+-- Name: authors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('author_id_seq', 1, false);
+SELECT pg_catalog.setval('authors_id_seq', 5, true);
 
 
 --
 -- Data for Name: books; Type: TABLE DATA; Schema: public; Owner: Guest
 --
 
-COPY books (id, title, copies, author_id) FROM stdin;
+COPY books (id, title, copies) FROM stdin;
+4	cool Book Title	2
+1	new cool title	9
+2	How to boil an egg	2
+6	hello 2123	2
 \.
 
 
@@ -262,21 +270,30 @@ COPY books (id, title, copies, author_id) FROM stdin;
 --
 
 COPY books_authors (id, book_id, author_id) FROM stdin;
+3	0	3
+6	2	2
+4	4	4
+7	4	4
+1	1	1
+8	1	1
+2	2	2
+9	2	2
+10	6	5
 \.
 
 
 --
--- Name: books_author_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
+-- Name: books_authors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('books_author_id_seq', 1, false);
+SELECT pg_catalog.setval('books_authors_id_seq', 10, true);
 
 
 --
--- Name: book_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
+-- Name: books_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('book_id_seq', 1, false);
+SELECT pg_catalog.setval('books_id_seq', 6, true);
 
 
 --
@@ -291,15 +308,15 @@ COPY patrons (id, name) FROM stdin;
 -- Data for Name: patrons_books; Type: TABLE DATA; Schema: public; Owner: Guest
 --
 
-COPY patrons_books (id, patrons_id, author_id, book_id) FROM stdin;
+COPY patrons_books (id, patron_id, author_id, book_id) FROM stdin;
 \.
 
 
 --
--- Name: patrons_book_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
+-- Name: patrons_books_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('patrons_book_id_seq', 1, false);
+SELECT pg_catalog.setval('patrons_books_id_seq', 1, false);
 
 
 --
