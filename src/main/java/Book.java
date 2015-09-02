@@ -44,6 +44,7 @@ public class Book {
         .executeUpdate()
         .getKey();
     }
+
   }
 
   public static List<Book> all() {
@@ -105,6 +106,16 @@ public class Book {
         .addParameter("book_id", this.getBookId())
         .addParameter("id", author.getAuthorId())
         .executeUpdate();
+    }
+  }
+
+  public Integer getBookAuthorId(){
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT author_id FROM books_authors WHERE book_id=:book_id";
+      Integer bookId = con.createQuery(sql)
+        .addParameter("book_id", id)
+        .executeAndFetchFirst(Integer.class);
+        return bookId;
     }
   }
 

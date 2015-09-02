@@ -74,15 +74,23 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    // Create course
+    // Create book
     post("/books", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
 
       String bookTitle = request.queryParams("bookTitle");
       Integer bookCopies = Integer.parseInt(request.queryParams("bookCopies"));
-      Book newBook = new Book(bookTitle, bookCopies);
+      String authorName = request.queryParams("authorName");
 
+
+      Book newBook = new Book(bookTitle, bookCopies);
+      Author newAuthor = new Author(authorName);
+
+      newAuthor.save();
       newBook.save();
+      newBook.addAuthor(newAuthor);
+
+
 
       model.put("allBooks", Book.all());
       model.put("template", "templates/books.vtl");
@@ -108,12 +116,13 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    // Edit course
+    // Edit book
     get("/books/:id/edit", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       int id = Integer.parseInt(request.params(":id"));
       Book editBook = Book.find(id);
-
+      Author editAuthor = Author.find(editBook.getBookAuthorId());
+      model.put("editAuthor", editAuthor);
       model.put("editBook", editBook);
       model.put("template", "templates/book-form.vtl");
       return new ModelAndView(model, layout);
@@ -135,12 +144,18 @@ public class App {
       HashMap<String, Object> model = new HashMap<String, Object>();
       String newBookTitle = request.queryParams("editBookTitle");
       Integer newBookCopies = Integer.parseInt(request.queryParams("editBookCopies"));
+      String newBookAuthor = request.queryParams("editAuthorName");
 
       int id = Integer.parseInt(request.params(":id"));
-      Book editBook = Book.find(id);
+      Book editBook = Book.find(id); //this is fine
+      Author editAuthor = Author.find(id);
+
+      editAuthor.update(newBookAuthor, editBook);
 
       editBook.update(newBookTitle, newBookCopies);
+      editBook.addAuthor(editAuthor);
 
+      model.put("editAuthor", editAuthor);
       model.put("allBooks", Book.all());
       model.put("template", "templates/books.vtl");
       return new ModelAndView(model, layout);

@@ -31,9 +31,9 @@
         <br>
 
         <label for="authorBooks">Add books:</label>
-        <select name="authorBooks">
+        <select name="authorId">
           #foreach ($book in $allBooks)
-        <option value="$book.getAuthorId()">$book.getTitle() $book.getCopies()</option>
+        <option value="$book.getBookId()">$book.getTitle() $book.getCopies()</option>
           #end
         </select>
 
